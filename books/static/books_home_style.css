@@ -1,0 +1,50 @@
+#header {
+	width: 100%;
+	border-bottom: 2px solid black;
+}
+
+#header h2 {
+	display: inline-block;
+	vertical-align: bottom;
+	padding-top: 10px;
+	padding-left: 10px;
+}
+
+#header a {
+	display: inline-block;
+	float: right;
+	margin-top: 15px;
+	margin-right: 10px;
+}
+
+#content {
+	padding: 10px;
+}
+
+#add_book {
+	display: inline-block;
+	width: 400px;
+	vertical-align: top;
+	margin: auto;
+	margin-right: 170px;
+	margin-bottom: 15px;
+}
+
+input {
+	width: 60%;
+}
+
+label {
+	width: 35%;
+}
+
+button {
+	display: block;
+	margin: auto;
+	margin-top: 10px;
+}
+
+#all_books {
+	display: inline-block;
+}
+
