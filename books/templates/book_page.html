@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Favorite Books</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'book_page_style.css' %}">
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+</head>
+<body>
+	<div id="wrapper">
+		<div id="header">
+			<h2>Welcome, {{request.session.first_name}}</h2>
+			<a href="/logout">log off</a>
+		</div>
+		<div id="content">
+			<div id="update_book">
+				{% if user == book.uploaded_by %}
+					<form action="/books/update_book/{{book.id}}" method="post">
+						{% csrf_token %}
+						<input type="text" name="title" value="{{book.title}}" id="title">
+				{% else %}
+					<h2>{{book.title}}</h2>
+				{% endif %}
+				<p>Added by: {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}}</p>
+				<p>Added on: {{book.created_at}}</p>
+				<p>Last updated on: {{book.updated_at}}</p>
+				{% if user == book.uploaded_by %}
+						<label for="desc">Description: </label>
+						<input type="text" name="desc" value="{{book.desc}}" id="desc">
+						<button type="submit" class="btn btn-secondary">Update</button>
+						<a href="/books/delete_book/{{book.id}}" class="btn btn-danger">Delete</a>
+					</form>
+				{% else %}
+					<p>Description: {{book.desc}}</p>
+				{% endif %}
+				<ul class="messages add_book">
+					{% if messages %}
+						{% for message in messages %}
+							{% if message.extra_tags == 'add_book' %}
+								<li>{{ message }}</li>
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+				</ul>
+
+			</div>
+			<div id="all_books">
+				<h2>Users Who Like This Book:</h2>
+				<ul>
+					{% for u in book.users_who_like.all %}
+						<li>
+							{{u.first_name}} {{u.last_name}}
+							{% if u == user %}
+								<a href="/books/add_favorite/{{book.id}}">Un-Favorite</a>
+							{% endif %}
+						</li>
+					{% endfor %}
+				</ul>
+				{% if user in book.users_who_like.all %}
+				{% else %}
+					<a href="/books/add_favorite/{{book.id}}">Add to Favorites</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</body>
+</html>
